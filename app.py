@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for
 import psycopg2
+import pandas as pd
+import os
 
 app = Flask(__name__)
 
-# Function to insert patient details into the database
+# Modified insert_patient function
 def insert_patient(patient_data):
     try:
         # PostgreSQL connection
@@ -36,6 +38,15 @@ def insert_patient(patient_data):
         cursor.close()
         conn.close()
 
+        # Append patient data to Excel sheet
+        df = pd.DataFrame([patient_data])
+        if not os.path.exists('patient_data.xlsx'):
+            df.to_excel('patient_data.xlsx', index=False)
+        else:
+            existing_df = pd.read_excel('patient_data.xlsx')
+            updated_df = pd.concat([existing_df, df], ignore_index=True)
+            updated_df.to_excel('patient_data.xlsx', index=False)
+
         return True
 
     except psycopg2.Error as e:
@@ -56,24 +67,12 @@ def home():
             'date_of_injury': request.form['date_of_injury']
         }
 
-        # Check if Emergency button is clicked
-        if 'emergency' in request.form:
-            # Handle emergency case
-            # Redirect or perform action as needed
-            return redirect(url_for('emergency_route'))
-
-        # Check if Police Case button is clicked
-        if 'police_case' in request.form:
-            # Handle police case
-            # Redirect or perform action as needed
-            return redirect(url_for('police_case_route'))
-
-        # Insert patient data into database
+        # Insert patient data into database and Excel sheet
         success = insert_patient(patient_data)
         if success:
             return redirect(url_for('success_route'))
         else:
-            return render_template('error.html', message="Failed to add patient.")
+            return render_template('error.html', message="Failed to add patient. Please try again.")
 
     return render_template('index.html')
 
