@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://static.vecteezy.com/system/resources/thumbnails/027/774/229/small/transparent-glass-sphere-background-3d-rendering-photo.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background-color: rgba(255, 248, 220, 0.7);
+            border-radius: 20px;
+            padding: 100px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #000000;
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 30px;
+        }
+        p {
+            color: #555555;
+            font-size: 28px;
+            margin-bottom: 15px;
+            transition: color 0.3s ease; /* Added transition effect */
+        }
+        p:hover {
+            color: #007bff; /* Changed color on hover */
+        }
+        .btn-back {
+            background-color: #000000;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 50px;
+            font-size: 26px;
+            cursor: pointer;
+            margin-top: 30px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            transition: background-color 0.3s ease;
+        }
+        .btn-back:hover {
+            background-color: #FF0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Patient Details</h2>
+        {% if patient %}
+            <div style="background-color: #E6E6FA; padding: 30px; border-radius: 10px; margin-bottom: 30px;">
+                <p><strong>Name:</strong> {{ patient[0] }}</p>
+                <p><strong>Address:</strong> {{ patient[1] }}</p>
+                <p><strong>Doctor Name:</strong> {{ patient[2] }}</p>
+                <p><strong>Contact Number:</strong> {{ patient[3] }}</p>
+                <p><strong>Email:</strong> {{ patient[4] }}</p>
+                <p><strong>Date of Injury:</strong> {{ patient[5] }}</p>
+            </div>
+        {% else %}
+            <p style="color: red; text-align: center;">No patient details found.</p>
+        {% endif %}
+        <button class="btn-back" onclick="window.location.href='/';">Go Back</button>
+    </div>
+</body>
+</html>
+ 
